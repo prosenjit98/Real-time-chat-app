@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const formatDate = (date) => {
   var today = new Date()
@@ -26,23 +27,30 @@ const formatDate = (date) => {
 const ChatListItem = (props) => {
   const { chatRoom } = props
   const user = chatRoom.users[1];
+  const navigation = useNavigation();
+
+  const onClick = () => {
+    // console.warn(`Click on ${user.name}`)
+    navigation.navigate('ChatRoom', { id: chatRoom.id, name: user.name })
+  }
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: user.imageUri }} style={styles.avatar} />
-      <View style={styles.mainContainer}>
-        <View style={styles.mainContainerTop}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{user.name}</Text>
-          {/* <Text>yesterday</Text> */}
-          <Text>{formatDate(Date.parse(chatRoom.lastMessage.createdAt))}</Text>
+    <TouchableWithoutFeedback onPress={onClick}>
+      <View style={styles.container}>
+        <Image source={{ uri: user.imageUri }} style={styles.avatar} />
+        <View style={styles.mainContainer}>
+          <View style={styles.mainContainerTop}>
+            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{user.name}</Text>
+            {/* <Text>yesterday</Text> */}
+            <Text>{formatDate(Date.parse(chatRoom.lastMessage.createdAt))}</Text>
+          </View>
+
+          <Text style={styles.lastMessage}
+            ellipsizeMode='tail'
+            numberOfLines={1}>{chatRoom.lastMessage.content}</Text>
         </View>
-
-        <Text style={styles.lastMessage}
-          ellipsizeMode='tail'
-          numberOfLines={1}>{chatRoom.lastMessage.content}</Text>
       </View>
-
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 

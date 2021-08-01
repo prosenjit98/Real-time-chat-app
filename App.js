@@ -24,7 +24,9 @@ import NotFound from './screens/NotFound';
 import MainTabNavigator from './navigations/MainTabNavigator';
 import Colors from './constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import ChatRoomScreen from './screens/ChatRoomScreen';
 
 
 const Stack = createStackNavigator();
@@ -56,6 +58,18 @@ const App = () => {
             )
           }}
         />
+        <Stack.Screen name={"ChatRoom"} component={ChatRoomScreen}
+          options={({ route }) => ({
+            title: route.params.name,
+            headerRight: () => (
+              <View style={{ flexDirection: 'row', width: 120, justifyContent: 'space-between' }}>
+                <FontAwesome name="video-camera" size={22} color="white" />
+                <MaterialIcons name="call" size={22} color="white" />
+                <Feather name="more-vertical" size={22} color="white" />
+              </View>
+            )
+          }
+          )} />
         <Stack.Screen name={"Not Found"} component={NotFound} />
       </Stack.Navigator>
     </NavigationContainer>
